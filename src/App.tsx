@@ -1,6 +1,3 @@
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
-
 const colors = {
   'Air Force Blue': '#5D8AA8',
   'Alice Blue': '#F0F8FF',
