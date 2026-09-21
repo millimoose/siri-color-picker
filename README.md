@@ -14,41 +14,44 @@ Color conversions are computed with [colortranslator](https://github.com/Netanel
 
 ## Tech stack
 
-- [React 18](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- [Vite](https://vitejs.dev/) for dev server and builds
+- [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite+](https://viteplus.dev/) — unified toolchain (`vp` CLI): Vite 8 + Rolldown builds, Oxlint, Oxfmt, type-aware checks via `vp check`
 - [MUI](https://mui.com/) for the UI, with slider rails rendered as CSS gradients
-- [lodash-es](https://www.npmjs.com/package/lodash-es) for filtering/grouping/sorting
+- [radashi](https://radashi.js.org/) for filtering/grouping/sorting
+- [Bun](https://bun.sh/) as the package manager (declared via `packageManager`, orchestrated by `vp`)
 
 ## Getting started
 
-Requires Node.js. Install dependencies:
+Requires the [`vp` CLI](https://viteplus.dev/) (on Windows: `irm https://vite.plus/ps1 | iex`). Node.js and Bun versions are selected automatically from `.node-version` and `packageManager`.
+
+Install dependencies:
 
 ```sh
-npm install
+vp install
 ```
 
 Start the dev server:
 
 ```sh
-npm run dev
+vp dev
 ```
 
-Build for production (type-checks with `tsc`, then bundles with Vite):
+Check formatting, lint, and types:
 
 ```sh
-npm run build
+vp check
+```
+
+Build for production:
+
+```sh
+vp build
 ```
 
 Preview the production build locally:
 
 ```sh
-npm run preview
-```
-
-Lint the sources:
-
-```sh
-npm run lint
+vp preview
 ```
 
 ## Deployment

@@ -21,9 +21,7 @@ export const DEFAULT_FILTERS: ColorFilters = {
 const BUCKET_COUNT = 3;
 const wrap = (deg: number) => ((deg % 360) + 360) % 360;
 
-export function selectColorGroups(
-  filters: ColorFilters
-): [string, string][][] {
+export function selectColorGroups(filters: ColorFilters): [string, string][][] {
   const width = filters.hueTo - filters.hueFrom;
   const origin = filters.hueFrom + filters.middleHue;
   const unit = width / BUCKET_COUNT;
@@ -31,15 +29,13 @@ export function selectColorGroups(
   const matching = COLOR_ENTRIES.filter(([, hex]) => {
     const lightness = lum(hex);
     return (
-      wrap(hue(hex) - origin) < width &&
-      filters.lumFrom <= lightness &&
-      lightness <= filters.lumTo
+      wrap(hue(hex) - origin) < width && filters.lumFrom <= lightness && lightness <= filters.lumTo
     );
   });
 
   return Object.values(
     group(matching, ([, hex]) =>
-      Math.min(Math.floor(wrap(hue(hex) - origin) / unit), BUCKET_COUNT - 1)
-    )
+      Math.min(Math.floor(wrap(hue(hex) - origin) / unit), BUCKET_COUNT - 1),
+    ),
   ).map((bucket) => sort(bucket ?? [], ([, hex]) => lum(hex), true));
 }

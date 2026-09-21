@@ -48,9 +48,9 @@ export function FilterPanel({ value, onChange, onReset }: FilterPanelProps) {
               }}
               sx={{
                 '& .MuiSlider-rail': {
-                  background: `linear-gradient(to right, ${[0, 1, 2, 3, 4].map(
-                    (idx) => `hsl(${value.middleHue + idx * 90 - 180}, 100%, 50%)`
-                  )})`,
+                  background: `linear-gradient(to right, ${[0, 1, 2, 3, 4]
+                    .map((idx) => `hsl(${value.middleHue + idx * 90 - 180}, 100%, 50%)`)
+                    .join(', ')})`,
                 },
               }}
             />
