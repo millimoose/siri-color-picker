@@ -1,30 +1,60 @@
-# React + TypeScript + Vite
+# Siri Color Picker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Browse a palette of 664 named colors — from Air Force Blue to Zinnwaldite Brown — filtered by hue and luminance with interactive sliders.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Middle Hue** — rotates the color wheel (0–360°) that the other sliders operate in
+- **Hue** — range slider selecting a window of hues (±180°) around the middle hue
+- **Luminance** — range slider filtering by CIELab lightness (L\*, 0–100)
+- Matching colors are grouped into three hue buckets, sorted darkest to lightest, and rendered as cards showing the name, hex value, hue, and lightness
+- **Reset** restores the default full-spectrum view
 
-## Expanding the ESLint configuration
+Color conversions are computed with [colortranslator](https://github.com/NetanelBasal/colortranslator): hue from HSL, luminance from CIELab.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Tech stack
 
-- Configure the top-level `parserOptions` property like this:
+- [React 18](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) for dev server and builds
+- [MUI](https://mui.com/) for the UI, with slider rails rendered as CSS gradients
+- [lodash-es](https://www.npmjs.com/package/lodash-es) for filtering/grouping/sorting
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Getting started
+
+Requires Node.js. Install dependencies:
+
+```sh
+npm install
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Start the dev server:
+
+```sh
+npm run dev
+```
+
+Build for production (type-checks with `tsc`, then bundles with Vite):
+
+```sh
+npm run build
+```
+
+Preview the production build locally:
+
+```sh
+npm run preview
+```
+
+Lint the sources:
+
+```sh
+npm run lint
+```
+
+## Deployment
+
+The app is deployed to GitHub Pages via the workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
+
+## License
+
+Distributed under the [MIT License](LICENSE).
