@@ -30,28 +30,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # fetch-depth: 0 gives React Doctor the full git history it needs to find the merge base with the target branch. Without it a shallow checkout has no merge base, so PR runs can't compare against the base and fall back to reporting every issue in the changed files (pre-existing ones included) instead of only the ones the PR introduced.
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
 
-      - uses: millionco/react-doctor@v2
+      # SHA-pinned to millionco/react-doctor@v2; scanner pinned via `version`.
+      # Upgrade: bump both to the new release's SHA/version.
+      - uses: millionco/react-doctor@013f7373f91a3b9e68bd1dc7d4d354f4b041b117 # v2
+        with:
+          version: '0.9.14'
         # Advisory by default: React Doctor reports findings on every PR — a
         # sticky summary comment, inline review comments, and a commit status
         # with the health score — but never fails the check, so it won't red-X
-        # a teammate's PR on day one. When your team trusts the signal, graduate
-        # the gate: uncomment the block below and set blocking to "error" (fail
-        # on new error-severity findings) or "warning" (fail on any finding).
+        # a teammate's PR on day one. When you trust the signal, add
+        # `blocking: error` (fail on new error-severity findings) or
+        # `blocking: warning` (fail on any finding).
         # Full reference: https://www.react.doctor/ci
-        #
-        # Security: @v2 is a floating major tag that may move. For supply-chain-
-        # hardened CI, pin to a full commit SHA with a version comment instead:
-        # uses: millionco/react-doctor@<sha>  # v2.x.x
-        # with:
-        #   blocking: error          # Gate level: "none" (advisory, the default) | "warning" | "error"
-        #   scope: full              # On PRs, scan the whole project instead of just changed files
-        #   comment: false           # Disable the sticky PR summary comment
-        #   review-comments: false   # Disable inline review comments on changed lines
-        #   commit-status: false     # Disable the commit status (score + counts, links to the run)
-        #   version: "0.4.0"         # Pin to a specific react-doctor version instead of "latest"
-        #   directory: apps/web      # Scan a sub-directory (default: ".")
-        #   project: "web,admin"     # In a monorepo, scan specific workspace project(s)
