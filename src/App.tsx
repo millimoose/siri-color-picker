@@ -19,7 +19,7 @@ function App() {
         <Paper>
           <Stack direction="row" spacing={2} sx={{ overflowX: 'auto' }}>
             {groups.map((group, gi) => (
-              <Stack key={gi} spacing={0.5}>
+              <Stack key={gi} spacing={0.5} sx={{ flex: 1, minWidth: 240 }}>
                 {group.map(([name, hex]) => (
                   <ColorCard key={name} name={name} hex={hex} />
                 ))}

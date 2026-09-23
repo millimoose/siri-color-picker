@@ -13,6 +13,7 @@ export function FilterPanel({ value, onChange, onReset }: FilterPanelProps) {
       <FormGroup
         sx={{
           '& .MuiSlider-track': { background: 'none' },
+          '& hr': { width: '100%', marginInline: 0 },
         }}
       >
         <FormControlLabel
