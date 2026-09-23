@@ -1,1 +1,15 @@
+#!/usr/bin/env sh
 vp staged
+
+# React Doctor advisory scan on staged files (non-blocking).
+if [ -x "./node_modules/.bin/react-doctor" ]; then
+  RD="./node_modules/.bin/react-doctor"
+elif command -v react-doctor >/dev/null 2>&1; then
+  RD="react-doctor"
+else
+  printf "%s\n" "react-doctor: not installed; skipping staged scan."
+  exit 0
+fi
+if ! "$RD" --staged --blocking warning; then
+  printf "%s\n" "React Doctor findings above are advisory; commit proceeds."
+fi

@@ -25,3 +25,13 @@ release. Add a tool name to select part of the graph. For example, run
 - [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
 
 <!--VITE PLUS END-->
+
+## React Doctor
+
+React code is scanned with [React Doctor](https://www.react.doctor/) for correctness, performance, security, accessibility, and maintainability issues.
+
+- Whole project: `bunx react-doctor --verbose` (or `bun run doctor`)
+- Changed files vs `main`: `bunx react-doctor --verbose --scope changed`
+- Staged files: `bunx react-doctor --staged` (also runs automatically as an advisory pre-commit hook)
+
+Treat findings as hypotheses: read the code before fixing or suppressing. CI runs an advisory scan on every push to `main` (`.github/workflows/react-doctor.yml`).
