@@ -9,7 +9,7 @@ interface FilterPanelProps {
 
 export function FilterPanel({ value, onChange, onReset }: FilterPanelProps) {
   return (
-    <Paper>
+    <Paper sx={{ flexShrink: 0 }}>
       <FormGroup
         sx={{
           '& .MuiSlider-track': { background: 'none' },
