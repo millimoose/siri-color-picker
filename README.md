@@ -15,8 +15,9 @@ Color conversions are computed with [colortranslator](https://github.com/Netanel
 ## Tech stack
 
 - [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
+- [React Router 8](https://reactrouter.com/) in framework mode with SSR — the index route is prerendered to static HTML at build time
+- [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) primitives (Button, Slider, Card, Label), with slider rails rendered as CSS gradients
 - [Vite+](https://viteplus.dev/) — unified toolchain (`vp` CLI): Vite 8 + Rolldown builds, Oxlint, Oxfmt, type-aware checks via `vp check`
-- [MUI](https://mui.com/) for the UI, with slider rails rendered as CSS gradients
 - [radashi](https://radashi.js.org/) for filtering/grouping/sorting
 - [Bun](https://bun.sh/) as the package manager (declared via `packageManager`, orchestrated by `vp`)
 
@@ -30,7 +31,7 @@ Install dependencies:
 vp install
 ```
 
-Start the dev server:
+Start the dev server — SSR output is served at [`http://localhost:5173/siri-color-picker/`](http://localhost:5173/siri-color-picker/):
 
 ```sh
 vp dev
@@ -42,7 +43,7 @@ Check formatting, lint, and types:
 vp check
 ```
 
-Build for production:
+Build for production — emits `build/client` (static assets plus the prerendered `index.html`) and `build/server` (the SSR bundle):
 
 ```sh
 vp build
@@ -56,7 +57,11 @@ vp preview
 
 ## Deployment
 
-The app is deployed to GitHub Pages via the workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml).
+The app is deployed to GitHub Pages via the workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml). Pages serves the prerendered `build/client` directory; the `build/server` bundle enables SSR when hosted on a Node server (e.g. `vp preview` or `react-router-serve`).
+
+## Migration note
+
+The UI was migrated from MUI to shadcn/ui on Tailwind v4: MUI's `Paper`/`Stack` layouts became Tailwind flex utilities, `Slider` + its gradient rails became shadcn's Radix-based `Slider` (composite `SliderTrack`/`SliderRange` API so the rails stay inline-styled gradients), and `Card`/`Typography`/`Button` became their shadcn counterparts. Filter state, `useDeferredValue` render deferral, and the `selectColorGroups` logic are unchanged; `@mui/material`, `@mui/icons-material`, and Emotion were removed entirely.
 
 ## License
 

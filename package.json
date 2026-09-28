@@ -13,19 +13,26 @@
     "doctor": "npx react-doctor@latest"
   },
   "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@mui/icons-material": "^9.4.0",
-    "@mui/material": "^9.4.0",
+    "@react-router/dev": "^8.4.0",
+    "@react-router/node": "^8.4.0",
+    "@react-router/serve": "^8.4.0",
+    "@tailwindcss/vite": "^4.3.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "colortranslator": "^6.1.1",
+    "isbot": "^5.2.2",
     "radashi": "^12.9.5",
+    "radix-ui": "^1.6.7",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "react-router": "^8.4.0",
+    "tailwind-merge": "^3.7.0",
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@types/node": "^26.6.3",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "@vitejs/plugin-react": "^6.1.1",
     "react-doctor": "^0.9.14",
     "typescript": "^7.0.2",
     "vite": "npm:@voidzero-dev/vite-plus-core@0.3.3",

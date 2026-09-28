@@ -18,8 +18,15 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* React Router */
+    // TS7 removed `baseUrl`; paths resolve relative to this tsconfig.
+    "paths": {
+      "~/*": ["./app/*"]
+    },
+    "rootDirs": [".", "./.react-router/types"]
   },
-  "include": ["src"],
+  "include": ["app", ".react-router/types/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

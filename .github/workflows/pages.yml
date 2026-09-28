@@ -42,15 +42,21 @@ jobs:
         run: vp check
       - name: Build Application
         run: vp build
-      - name: Build development build
-        run: NODE_ENV=development vp build --minify false --sourcemap --base /siri-color-picker/dev/ --outDir dist/dev
+      # (No separate "dev build" step: under React Router framework mode the
+      # legacy snapshot flags no longer scope correctly — `--outDir dist/dev`
+      # still emits the server build into build/server and `--base
+      # /siri-color-picker/dev/` rewrites the embedded client manifest to
+      # dev-hashed assets, silently corrupting build/. Pages serves the
+      # prerendered build/client from `vp build` above.)
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - name: Upload artifact
         uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa # v3
         with:
-          # Upload entire repository
-          path: './dist'
+          # React Router framework build: prerendered index.html lives at
+          # build/client/siri-color-picker/index.html (basename-mirrored), so
+          # the Pages site root serves the app at /siri-color-picker/.
+          path: './build/client'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
