@@ -15,7 +15,7 @@ Color conversions are computed with [colortranslator](https://github.com/Netanel
 ## Tech stack
 
 - [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
-- [React Router 8](https://reactrouter.com/) in framework mode with SSR — the index route is prerendered to static HTML at build time
+- [React Router 7](https://reactrouter.com/) in framework mode with SSR — the index route is prerendered to static HTML at build time
 - [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) primitives (Button, Slider, Card, Label), with slider rails rendered as CSS gradients
 - [Vite+](https://viteplus.dev/) — unified toolchain (`vp` CLI): Vite 8 + Rolldown builds, Oxlint, Oxfmt, type-aware checks via `vp check`
 - [radashi](https://radashi.js.org/) for filtering/grouping/sorting
@@ -43,11 +43,13 @@ Check formatting, lint, and types:
 vp check
 ```
 
-Build for production — emits `build/client` (static assets plus the prerendered `index.html`) and `build/server` (the SSR bundle):
+Build for production — emits `build/client` (static assets plus the prerendered `siri-color-picker/index.html`, basename-mirrored) and `build/server` (the SSR bundle):
 
 ```sh
-vp build
+react-router build
 ```
+
+(`react-router build`, not `vp build`: React Router 7 prerenders from its own SSR-pass `writeBundle` hook, which vite-plus's built-in build command never triggers — the build would exit 0 with no prerendered HTML.)
 
 Preview the production build locally:
 

@@ -41,13 +41,18 @@ jobs:
       - name: Check
         run: vp check
       - name: Build Application
-        run: vp build
+        # RR 7 prerenders from its own SSR-pass writeBundle hook, which the
+        # vite-plus built-in `vp build` never triggers (isSsrBuild gate);
+        # `vpr build` runs the package.json script (`react-router build`),
+        # React Router's canonical two-pass builder.
+        run: vpr build
+        timeout-minutes: 5
       # (No separate "dev build" step: under React Router framework mode the
       # legacy snapshot flags no longer scope correctly — `--outDir dist/dev`
       # still emits the server build into build/server and `--base
       # /siri-color-picker/dev/` rewrites the embedded client manifest to
       # dev-hashed assets, silently corrupting build/. Pages serves the
-      # prerendered build/client from `vp build` above.)
+      # prerendered build/client from the build step above.)
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - name: Upload artifact

@@ -6,16 +6,16 @@
   "type": "module",
   "scripts": {
     "dev": "vp dev",
-    "build": "vp build",
+    "build": "react-router build",
     "check": "vp check",
     "preview": "vp preview",
     "prepare": "vp config",
     "doctor": "npx react-doctor@latest"
   },
   "dependencies": {
-    "@react-router/dev": "^8.4.0",
-    "@react-router/node": "^8.4.0",
-    "@react-router/serve": "^8.4.0",
+    "@react-router/dev": "7.18.4",
+    "@react-router/node": "7.18.4",
+    "@react-router/serve": "7.18.4",
     "@tailwindcss/vite": "^4.3.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -25,7 +25,7 @@
     "radix-ui": "^1.6.7",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
-    "react-router": "^8.4.0",
+    "react-router": "7.18.4",
     "tailwind-merge": "^3.7.0",
     "tailwindcss": "^4.3.3"
   },
