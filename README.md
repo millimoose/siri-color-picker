@@ -61,6 +61,18 @@ vp preview
 
 The app is deployed to GitHub Pages via the workflow in [`.github/workflows/pages.yml`](.github/workflows/pages.yml). Pages serves the prerendered `build/client` directory; the `build/server` bundle enables SSR when hosted on a Node server (e.g. `vp preview` or `react-router-serve`).
 
+### Development snapshot
+
+The same deployment also ships an unminified, sourcemapped build with React's development code at [https://millimoose.github.io/siri-color-picker/dev/](https://millimoose.github.io/siri-color-picker/dev/). It exists for React DevTools profiling: component names (`ColorCard`, `FilterPanel`) and functions (`selectColorGroups`) appear readable instead of minified, at the cost of bundle size and runtime speed.
+
+Build it locally (emits to `dist/dev`, leaving the production `build/` output untouched):
+
+```sh
+DEV_SNAPSHOT=1 NODE_ENV=development react-router build
+```
+
+`DEV_SNAPSHOT=1` switches `basename`/`base` to `/siri-color-picker/dev/` and the output directory to `dist/dev` (via `react-router.config.ts` and `vite.config.ts`); `NODE_ENV=development` is what makes Vite statically replace `process.env.NODE_ENV` in the bundle so React ships its development builds. Without `DEV_SNAPSHOT`, `react-router build` behaves exactly as in the production path above. In CI, the snapshot is built after the production build and copied into `build/client/dev`, so the single Pages artifact serves both.
+
 ## Migration note
 
 The UI was migrated from MUI to shadcn/ui on Tailwind v4: MUI's `Paper`/`Stack` layouts became Tailwind flex utilities, `Slider` + its gradient rails became shadcn's Radix-based `Slider` (composite `SliderTrack`/`SliderRange` API so the rails stay inline-styled gradients), and `Card`/`Typography`/`Button` became their shadcn counterparts. Filter state, `useDeferredValue` render deferral, and the `selectColorGroups` logic are unchanged; `@mui/material`, `@mui/icons-material`, and Emotion were removed entirely.

@@ -47,12 +47,6 @@ jobs:
         # React Router's canonical two-pass builder.
         run: vpr build
         timeout-minutes: 5
-      # (No separate "dev build" step: under React Router framework mode the
-      # legacy snapshot flags no longer scope correctly — `--outDir dist/dev`
-      # still emits the server build into build/server and `--base
-      # /siri-color-picker/dev/` rewrites the embedded client manifest to
-      # dev-hashed assets, silently corrupting build/. Pages serves the
-      # prerendered build/client from the build step above.)
       - name: Surface prerendered index at artifact root
         # RR7 prerenders basename-mirrored (build/client/siri-color-picker/
         # index.html), but GitHub Pages project sites map the artifact ROOT
@@ -61,6 +55,28 @@ jobs:
         # asset refs inside are base-prefixed absolutes (/siri-color-picker/
         # assets/...), so they resolve correctly from the artifact root.
         run: mv build/client/siri-color-picker/index.html build/client/index.html
+      - name: Build development snapshot
+        # Unminified, sourcemapped build with development React (readable
+        # component names) for React DevTools profiling, served at
+        # /siri-color-picker/dev/. DEV_SNAPSHOT=1 switches basename/base and
+        # the output directory (dist/dev, so the production build/ above —
+        # already relocated by the step before — stays untouched) via
+        # react-router.config.ts + vite.config.ts; NODE_ENV=development makes
+        # Vite statically replace process.env.NODE_ENV with "development" in
+        # the bundle, shipping React's dev builds.
+        run: DEV_SNAPSHOT=1 NODE_ENV=development vpr build
+        timeout-minutes: 5
+      - name: Copy development snapshot into artifact
+        # RR7 prerenders basename-mirrored inside the snapshot's own outDir
+        # (dist/dev/client/siri-color-picker/dev/index.html), but Pages serves
+        # build/client/dev/* at /siri-color-picker/dev/*. Copy the snapshot's
+        # client output under dev/, surfacing its index.html at that root and
+        # dropping the basename-mirrored dir (that index is its only content).
+        run: |
+          mkdir -p build/client/dev
+          cp -r dist/dev/client/. build/client/dev/
+          mv build/client/dev/siri-color-picker/dev/index.html build/client/dev/index.html
+          rm -rf build/client/dev/siri-color-picker
       - name: Setup Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
       - name: Upload artifact
