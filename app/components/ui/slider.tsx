@@ -31,7 +31,9 @@ const sliderTrackVariants = cva('relative grow rounded-full data-[orientation=ho
     },
     variant: {
       default: 'bg-muted',
-      gradient: 'bg-(--rail)',
+      // Gradient is an image, not a color: bg-(--rail) would compute to an
+      // invalid background-color and render nothing.
+      gradient: 'bg-[image:var(--rail)]',
     },
   },
   defaultVariants: { size: 'default', variant: 'default' },

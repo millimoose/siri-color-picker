@@ -1,5 +1,6 @@
 import type { LinksFunction } from 'react-router';
 import { Links, Meta, Outlet, Scripts } from 'react-router';
+import { ThemeProvider } from 'next-themes';
 import { Toaster } from '~/components/ui/sonner';
 import appStylesHref from './app.css?url';
 
@@ -28,9 +29,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <Outlet />
       <Toaster position="bottom-center" />
-    </>
+    </ThemeProvider>
   );
 }
