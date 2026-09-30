@@ -1,7 +1,10 @@
 import { useDeferredValue, useMemo, useState } from 'react';
-import { ColorCard } from '~/components/ColorCard';
+import { ColorResults } from '~/components/ColorResults';
 import { FilterPanel } from '~/components/FilterPanel';
+import { COLOR_ENTRIES } from '~/lib/colors';
 import { ColorFilters, DEFAULT_FILTERS, selectColorGroups } from '~/lib/filterColors';
+import { useIsStacked } from '~/lib/useIsStacked';
+import { cn } from '~/lib/utils';
 
 function App() {
   const [filters, setFilters] = useState<ColorFilters>(DEFAULT_FILTERS);
@@ -9,31 +12,34 @@ function App() {
   // and let the grid catch up at background priority.
   const deferredFilters = useDeferredValue(filters);
   const groups = useMemo(() => selectColorGroups(deferredFilters), [deferredFilters]);
+  const matchCount = useMemo(() => groups.reduce((n, g) => n + g.items.length, 0), [groups]);
+  const isStacked = useIsStacked();
+  const density = 'compact';
 
   return (
-    <div className="mx-auto flex h-full w-full max-w-[1200px] flex-col gap-4 p-4">
-      <FilterPanel
-        value={filters}
-        onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
-        onReset={() => setFilters(DEFAULT_FILTERS)}
-      />
-      <main className="min-h-0 min-w-0 flex-1 overflow-auto rounded-xl border bg-card shadow-sm">
-        <div className="flex w-max min-w-full flex-row gap-4 p-4">
-          {groups.map((group, gi) => (
-            <div key={gi} className="flex min-w-[240px] flex-1 flex-col gap-0.5">
-              {group.map((color) => (
-                <ColorCard
-                  key={color.name}
-                  name={color.name}
-                  hex={color.hex}
-                  hue={color.hue}
-                  lum={color.lum}
-                />
-              ))}
-            </div>
-          ))}
+    <div className="mx-auto flex max-w-[1320px] flex-col gap-5 p-[clamp(1rem,3vw,2rem)]">
+      <header className="flex flex-col gap-1">
+        <h1 className="text-xl font-semibold tracking-tight">Siri Color Picker</h1>
+        <p className="text-sm text-muted-foreground">
+          <strong className="font-medium text-foreground">{matchCount}</strong> of{' '}
+          {COLOR_ENTRIES.length} named colors · tap a swatch to copy its hex
+        </p>
+      </header>
+      <div className="flex flex-wrap items-start gap-4">
+        <div className={cn('sticky min-w-0 flex-[1_1_320px]', isStacked ? 'top-0' : 'top-6')}>
+          <FilterPanel
+            value={filters}
+            onChange={(patch) => setFilters((prev) => ({ ...prev, ...patch }))}
+            onReset={() => setFilters(DEFAULT_FILTERS)}
+          />
         </div>
-      </main>
+        <ColorResults
+          className="min-w-0 flex-[999_1_480px]"
+          groups={groups}
+          density={density}
+          onReset={() => setFilters(DEFAULT_FILTERS)}
+        />
+      </div>
     </div>
   );
 }

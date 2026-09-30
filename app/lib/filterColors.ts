@@ -1,4 +1,4 @@
-import { group, sort } from 'radashi';
+import { sort } from 'radashi';
 import { COLOR_ENTRIES } from './colors';
 import { hue, lum } from './colorMath';
 
@@ -37,7 +37,13 @@ const COLOR_ITEMS: ColorItem[] = COLOR_ENTRIES.map(([name, hex]) => ({
 const BUCKET_COUNT = 3;
 const wrap = (deg: number) => ((deg % 360) + 360) % 360;
 
-export function selectColorGroups(filters: ColorFilters): ColorItem[][] {
+export interface ColorGroup {
+  from: number; // absolute hue of bucket start, 0..360
+  span: number; // bucket width in degrees
+  items: ColorItem[]; // sorted by lum descending
+}
+
+export function selectColorGroups(filters: ColorFilters): ColorGroup[] {
   const width = filters.hueTo - filters.hueFrom;
   const origin = filters.hueFrom + filters.middleHue;
   const unit = width / BUCKET_COUNT;
@@ -49,9 +55,16 @@ export function selectColorGroups(filters: ColorFilters): ColorItem[][] {
       color.lum <= filters.lumTo,
   );
 
-  return Object.values(
-    group(matching, (color) =>
-      Math.min(Math.floor(wrap(color.hue - origin) / unit), BUCKET_COUNT - 1),
-    ),
-  ).map((bucket) => sort(bucket ?? [], (color) => color.lum, true));
+  const buckets: ColorItem[][] = Array.from({ length: BUCKET_COUNT }, () => []);
+  for (const color of matching) {
+    buckets[Math.min(Math.floor(wrap(color.hue - origin) / unit), BUCKET_COUNT - 1)].push(color);
+  }
+
+  return buckets
+    .map((items, i) => ({
+      from: wrap(origin + i * unit),
+      span: unit,
+      items: sort(items, (color) => color.lum, true),
+    }))
+    .filter((g) => g.items.length > 0);
 }

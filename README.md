@@ -4,11 +4,12 @@ Browse a palette of 664 named colors — from Air Force Blue to Zinnwaldite Brow
 
 ## Features
 
-- **Middle Hue** — rotates the color wheel (0–360°) that the other sliders operate in
-- **Hue** — range slider selecting a window of hues (±180°) around the middle hue
-- **Luminance** — range slider filtering by CIELab lightness (L\*, 0–100)
-- Matching colors are grouped into three hue buckets, sorted darkest to lightest, and rendered as cards showing the name, hex value, hue, and lightness
-- **Reset** restores the default full-spectrum view
+- **Middle hue** — rotates the color wheel (0–360°) that the other sliders operate in
+- **Hue window** — range slider selecting a window of hues (±180°) around the middle hue
+- **Lightness** — range slider filtering by CIELab lightness (L\*, 0–100)
+- Matching colors are grouped into three hue buckets (each headed by its hue range and a count), sorted darkest to lightest, and rendered as compact swatches showing the name and hex value
+- **Tap a swatch** to copy its hex — confirmed by a toast
+- **Reset** restores the default full-spectrum view; the filter panel collapses to a summary on narrow screens and sticks to the top, and sits as a sticky sidebar next to the results on wide ones
 
 Color conversions are computed with [colortranslator](https://github.com/NetanelBasal/colortranslator): hue from HSL, luminance from CIELab.
 
@@ -16,7 +17,7 @@ Color conversions are computed with [colortranslator](https://github.com/Netanel
 
 - [React 19](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/)
 - [React Router 7](https://reactrouter.com/) in framework mode with SSR — the index route is prerendered to static HTML at build time
-- [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) primitives (Button, Slider, Card, Label), with slider rails rendered as CSS gradients
+- [Tailwind CSS v4](https://tailwindcss.com/) + [shadcn/ui](https://ui.shadcn.com/) primitives (Button, Slider, Card, Badge, Collapsible, Field, Empty, Sonner), themed by the `bdvw9FeS` preset, with slider rails rendered as CSS gradients
 - [Vite+](https://viteplus.dev/) — unified toolchain (`vp` CLI): Vite 8 + Rolldown builds, Oxlint, Oxfmt, type-aware checks via `vp check`
 - [radashi](https://radashi.js.org/) for filtering/grouping/sorting
 - [Bun](https://bun.sh/) as the package manager (declared via `packageManager`, orchestrated by `vp`)
@@ -63,7 +64,7 @@ The app is deployed to GitHub Pages via the workflow in [`.github/workflows/page
 
 ### Development snapshot
 
-The same deployment also ships an unminified, sourcemapped build with React's development code at [https://millimoose.github.io/siri-color-picker/dev/](https://millimoose.github.io/siri-color-picker/dev/). It exists for React DevTools profiling: component names (`ColorCard`, `FilterPanel`) and functions (`selectColorGroups`) appear readable instead of minified, at the cost of bundle size and runtime speed.
+The same deployment also ships an unminified, sourcemapped build with React's development code at [https://millimoose.github.io/siri-color-picker/dev/](https://millimoose.github.io/siri-color-picker/dev/). It exists for React DevTools profiling: component names (`ColorSwatch`, `FilterPanel`) and functions (`selectColorGroups`) appear readable instead of minified, at the cost of bundle size and runtime speed.
 
 Build it locally (emits to `dist/dev`, leaving the production `build/` output untouched):
 

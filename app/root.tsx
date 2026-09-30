@@ -1,5 +1,6 @@
 import type { LinksFunction } from 'react-router';
 import { Links, Meta, Outlet, Scripts } from 'react-router';
+import { Toaster } from '~/components/ui/sonner';
 import appStylesHref from './app.css?url';
 
 export const links: LinksFunction = () => [
@@ -27,8 +28,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
-    <div className="h-dvh">
+    <>
       <Outlet />
-    </div>
+      <Toaster position="bottom-center" />
+    </>
   );
 }
