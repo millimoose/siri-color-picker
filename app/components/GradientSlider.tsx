@@ -47,7 +47,7 @@ export function GradientSlider({
         minStepsBetweenThumbs={0}
       >
         <SliderTrack variant="gradient" style={{ '--rail': rail } as React.CSSProperties}>
-          <SliderRange variant="window" />
+          {isRange && <SliderRange variant="window" />}
           {isRange && <SliderMask side="start" percent={percent(value[0])} />}
           {isRange && <SliderMask side="end" percent={100 - percent(value[1])} />}
         </SliderTrack>

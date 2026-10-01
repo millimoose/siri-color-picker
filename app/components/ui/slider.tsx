@@ -13,10 +13,8 @@ const sliderVariants = cva(
     variants: {
       size: {
         default: '',
-        // 44px touch target; half-thumb inline padding so edge thumbs are not
-        // clipped (Track compensates with -mx-3.5 to stay aligned with the
-        // Radix value mapping, which is computed against the Root box).
-        lg: 'h-11 px-3.5',
+        // 44px touch target.
+        lg: 'h-11',
       },
     },
     defaultVariants: { size: 'default' },
@@ -27,7 +25,7 @@ const sliderTrackVariants = cva('relative grow rounded-full data-[orientation=ho
   variants: {
     size: {
       default: 'overflow-hidden data-[orientation=horizontal]:h-1.5',
-      lg: '-mx-3.5 overflow-visible data-[orientation=horizontal]:h-4 inset-ring-1 inset-ring-border',
+      lg: 'overflow-visible data-[orientation=horizontal]:h-4 inset-ring-1 inset-ring-border',
     },
     variant: {
       default: 'bg-muted',
@@ -39,15 +37,15 @@ const sliderTrackVariants = cva('relative grow rounded-full data-[orientation=ho
   defaultVariants: { size: 'default', variant: 'default' },
 });
 
-const sliderRangeVariants = cva('absolute data-[orientation=horizontal]:h-full', {
+const sliderRangeVariants = cva('absolute', {
   variants: {
     variant: {
-      fill: 'bg-primary',
+      fill: 'bg-primary data-[orientation=horizontal]:h-full',
       // Transparent outline over a gradient rail: marks the selected window
-      // without painting over the rail. Extends 3px past the track vertically
-      // (h-auto lets the inset-y offsets win over the base h-full).
-      window:
-        'pointer-events-none -inset-y-[3px] h-auto rounded-full bg-transparent ring-2 ring-primary',
+      // without painting over the rail.
+      // Stretches past the rail 3px via top/bottom insets — must not carry any
+      // height class, or the height would win over the -inset-y offsets.
+      window: 'pointer-events-none -inset-y-[3px] rounded-full bg-transparent ring-2 ring-primary',
     },
   },
   defaultVariants: { variant: 'fill' },
@@ -96,7 +94,7 @@ function SliderTrack({
       data-slot="slider-track"
       className={cn(
         sliderTrackVariants({ variant }),
-        'group-data-[size=lg]/slider:-mx-3.5 group-data-[size=lg]/slider:overflow-visible group-data-[size=lg]/slider:data-[orientation=horizontal]:h-4 group-data-[size=lg]/slider:inset-ring-1 group-data-[size=lg]/slider:inset-ring-border',
+        'group-data-[size=lg]/slider:overflow-visible group-data-[size=lg]/slider:data-[orientation=horizontal]:h-4 group-data-[size=lg]/slider:inset-ring-1 group-data-[size=lg]/slider:inset-ring-border',
         className,
       )}
       {...props}
