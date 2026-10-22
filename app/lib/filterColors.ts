@@ -19,7 +19,8 @@ export const DEFAULT_FILTERS: ColorFilters = {
 };
 
 export interface ColorItem {
-  name: string;
+  id: string; // stable key: named color name, or normalized hex for palette colors
+  name?: string; // absent for palette colors
   hex: string;
   hue: number;
   lum: number;
@@ -27,12 +28,24 @@ export interface ColorItem {
 
 // Color parsing is expensive; every entry's hue and lightness are static, so
 // derive them once at module load and keep filtering down to comparisons.
-const COLOR_ITEMS: ColorItem[] = COLOR_ENTRIES.map(([name, hex]) => ({
+export const COLOR_ITEMS: readonly ColorItem[] = COLOR_ENTRIES.map(([name, hex]) => ({
+  id: name,
   name,
   hex,
   hue: hue(hex),
   lum: lum(hex),
 }));
+
+/** Adapts a palette's hexes to the grid's item shape, deduping defensively. */
+export function toColorItems(hexes: readonly string[]): ColorItem[] {
+  const items: ColorItem[] = [];
+  for (const value of hexes) {
+    const hex = value.toUpperCase();
+    if (items.some((item) => item.id === hex)) continue;
+    items.push({ id: hex, name: undefined, hex, hue: hue(hex), lum: lum(hex) });
+  }
+  return items;
+}
 
 const BUCKET_COUNT = 3;
 const wrap = (deg: number) => ((deg % 360) + 360) % 360;
@@ -43,12 +56,15 @@ export interface ColorGroup {
   items: ColorItem[]; // sorted by lum descending
 }
 
-export function selectColorGroups(filters: ColorFilters): ColorGroup[] {
+export function selectColorGroups(
+  filters: ColorFilters,
+  items: readonly ColorItem[] = COLOR_ITEMS,
+): ColorGroup[] {
   const width = filters.hueTo - filters.hueFrom;
   const origin = filters.hueFrom + filters.middleHue;
   const unit = width / BUCKET_COUNT;
 
-  const matching = COLOR_ITEMS.filter(
+  const matching = items.filter(
     (color) =>
       wrap(color.hue - origin) < width &&
       filters.lumFrom <= color.lum &&

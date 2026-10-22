@@ -21,7 +21,7 @@ export function ColorGroup({ from, span, items, density }: ColorGroupData & { de
       <div className={density === 'compact' ? 'flex flex-col gap-[3px]' : 'flex flex-col gap-1.5'}>
         {items.map((color) => (
           <ColorSwatch
-            key={color.name}
+            key={color.id}
             name={color.name}
             hex={color.hex}
             hue={color.hue}

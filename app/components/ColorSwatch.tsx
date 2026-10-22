@@ -25,7 +25,7 @@ const swatchVariants = cva(
 export type Density = 'compact' | 'comfortable';
 
 interface ColorSwatchProps {
-  name: string;
+  name?: string;
   hex: string;
   hue: number;
   lum: number;
@@ -57,14 +57,23 @@ export const ColorSwatch = memo(function ColorSwatch({
     >
       {density === 'compact' ? (
         <>
-          <span className="truncate text-sm font-medium">{name}</span>
-          <span className="font-mono text-xs">{hex}</span>
+          <span className={cn('truncate text-sm font-medium', name === undefined && 'font-mono')}>
+            {name ?? hex}
+          </span>
+          {name !== undefined && <span className="font-mono text-xs">{hex}</span>}
         </>
       ) : (
         <>
           <span className="flex flex-col gap-0.5">
-            <span className="text-base font-semibold text-pretty">{name}</span>
-            <span className="font-mono text-sm">{hex}</span>
+            <span
+              className={cn(
+                'text-base font-semibold text-pretty',
+                name === undefined && 'font-mono text-sm',
+              )}
+            >
+              {name ?? hex}
+            </span>
+            {name !== undefined && <span className="font-mono text-sm">{hex}</span>}
           </span>
           <span className={cn('text-right font-mono text-xs', secondary)}>
             H: {Math.round(hue)}°
