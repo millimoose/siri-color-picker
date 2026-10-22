@@ -1,0 +1,41 @@
+{
+  "workflow": "superpowers",
+  "entrySkill": "skill://using-superpowers",
+  "issue": 2,
+  "slug": "photo-to-palette",
+  "title": "Create color palette from uploaded photo",
+  "branch": "task/2-photo-to-palette",
+  "baseCommit": "08ac4f9",
+  "initializedAt": "2026-10-22T15:26:22Z",
+  "stage": "brainstorming",
+  "stageStatus": "pending",
+  "stageRationale": "No spec exists at docs/superpowers/2-photo-to-palette/spec.md, and no docs/ tree exists on any local or remote branch. Feature work has no design yet, so brainstorming is the entry stage.",
+  "stageOrder": [
+    "brainstorming",
+    "spec_agent_review",
+    "spec_human_review",
+    "planning",
+    "plan_agent_review",
+    "plan_human_review",
+    "implementing",
+    "impl_agent_review",
+    "impl_human_review",
+    "landing",
+    "done"
+  ],
+  "artifacts": {
+    "spec": "docs/superpowers/2-photo-to-palette/spec.md",
+    "plan": "docs/superpowers/2-photo-to-palette/plan.md"
+  },
+  "repoContext": {
+    "runtime": "React 19 + React Router 7 framework mode; index route prerendered to static HTML and served from GitHub Pages",
+    "constraint": "Production deployment is static hosting; there is no server-side runtime for uploads or image processing",
+    "ui": "Tailwind CSS v4 + shadcn/ui primitives; toolchain is vp (Vite+, Oxlint, Oxfmt, type-aware check); package manager Bun",
+    "entryRoute": "app/routes/_index.tsx is the only route and owns filter state (ColorFilters) passed to FilterPanel and ColorResults",
+    "colorData": "app/lib/colors.ts exposes COLORS (664 name -> hex entries); app/lib/filterColors.ts precomputes hue and CIELab L* and exposes selectColorGroups",
+    "swatches": "app/components/ColorSwatch.tsx renders a swatch button and copies its hex via app/lib/copyColor.tsx",
+    "persistence": "No persistence layer exists (no localStorage, sessionStorage, or IndexedDB usage)",
+    "tests": "No test files and no test runner configuration in the repository"
+  },
+  "notes": "Init stage only. Do not execute the brainstorming stage in this session."
+}
