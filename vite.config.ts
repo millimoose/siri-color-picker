@@ -18,11 +18,18 @@ export default defineConfig({
   staged: {
     '*': 'vp check --fix',
   },
-  fmt: { singleQuote: true },
+  // Planning artifacts under docs/superpowers are prose records, not source:
+  // oxfmt rewrites their tables into unreadable padded columns (and breaks the
+  // `Palette | null` cell outright), so they stay byte-stable.
+  fmt: { singleQuote: true, ignorePatterns: ['docs/superpowers/**'] },
   lint: {
     jsPlugins: [{ name: 'vite-plus', specifier: 'vite-plus/oxlint-plugin' }],
     rules: { 'vite-plus/prefer-vite-plus-imports': 'error' },
     options: { typeAware: true, typeCheck: true },
+  },
+  test: {
+    include: ['app/**/*.test.ts'],
+    environment: 'node',
   },
   base: DEV_SNAPSHOT ? '/siri-color-picker/dev/' : '/siri-color-picker/',
   // RR8 no longer auto-configures the `~` alias; tsconfig paths mirror this.

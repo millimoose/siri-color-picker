@@ -4,3 +4,8 @@ dist/
 # React Router
 .react-router/
 build/
+
+# Super Pi stage/review markers are runtime I/O, not repo state
+.super-pi/stage-result.json
+.super-pi/review-result.json
+.super-pi/last-review.md
