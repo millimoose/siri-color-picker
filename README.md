@@ -9,6 +9,7 @@ Browse a palette of 664 named colors — from Air Force Blue to Zinnwaldite Brow
 - **Lightness** — range slider filtering by CIELab lightness (L\*, 0–100)
 - Matching colors are grouped into three hue buckets (each headed by its hue range and a count), sorted darkest to lightest, and rendered as compact swatches showing the name and hex value
 - **Tap a swatch** to copy its hex — confirmed by a toast
+- **Palettes from photos** — upload an image; up to six dominant colors are extracted on-device (the image never leaves the browser), saved under a name, and selectable as the grid's color source
 - **Reset** restores the default full-spectrum view; the filter panel collapses to a summary on narrow screens and sticks to the top, and sits as a sticky sidebar next to the results on wide ones
 
 Color conversions are computed with [colortranslator](https://github.com/NetanelBasal/colortranslator): hue from HSL, luminance from CIELab.
@@ -44,6 +45,12 @@ Check formatting, lint, and types:
 vp check
 ```
 
+Run the unit tests (color math, photo quantizer, palette store):
+
+```sh
+vp test
+```
+
 Build for production — emits `build/client` (static assets plus the prerendered `siri-color-picker/index.html`, basename-mirrored) and `build/server` (the SSR bundle):
 
 ```sh
@@ -57,6 +64,15 @@ Preview the production build locally:
 ```sh
 vp preview
 ```
+
+## Palettes
+
+**Palettes** in the header and **From photo** above the grid open the palette manager. Choose an image, name the extracted palette, and save it. The palette then appears in the **Colors** select and replaces the grid's source: the same hue/lightness sliders, hue buckets, and tap-to-copy swatches apply to its colors.
+
+- Up to six dominant colors are extracted; a photo with fewer distinct dominant colors yields fewer.
+- Extraction runs entirely in the browser. The image is decoded, downscaled to a 200px sample, and discarded — only the hex values are stored.
+- Palettes live in `localStorage` under `siri-color-picker:palettes:v1`, per browser. They can be deleted (with confirmation) but not renamed; the selected source resets to named colors on reload.
+- If storage is unavailable, palettes still work for the session; saves and deletes report that they were not persisted.
 
 ## Deployment
 

@@ -40,6 +40,8 @@ jobs:
         run: vp install
       - name: Check
         run: vp check
+      - name: Test
+        run: vp test
       - name: Build Application
         # RR 7 prerenders from its own SSR-pass writeBundle hook, which the
         # vite-plus built-in `vp build` never triggers (isSsrBuild gate);
